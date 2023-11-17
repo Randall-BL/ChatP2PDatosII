@@ -11,6 +11,7 @@ public:
         hash.addData(datos);
         return hash.result();
     }
+
 };
 
 #endif // ENCRIPTADOR_H

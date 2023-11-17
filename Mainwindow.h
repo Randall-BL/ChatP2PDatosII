@@ -18,12 +18,13 @@ private:
     QTextEdit *messageDisplay;
     QLineEdit *messageInput;
     QPushButton *sendButton;
-
+    QByteArray hashEnviado;
     Cliente cliente;
 
 private slots:
     void enviarMensaje();
     void mostrarMensajeRecibido(const QString &mensaje);
+
 };
 
 #endif // MAINWINDOW_H
