@@ -8,6 +8,11 @@
 #include <sstream>
 MainWindow::MainWindow(quint16 serverPort, quint16 clientPort, QWidget *parent)
     : QMainWindow(parent) {
+    /**
+     * @arg serverPort, clientPort, *parent
+     * @return la pagina principal del usuario
+     *
+     */
     // Configuración de la interfaz de usuario
     auto *centralWidget = new QWidget(this);
     auto *layout = new QVBoxLayout(centralWidget);
@@ -34,6 +39,10 @@ MainWindow::MainWindow(quint16 serverPort, quint16 clientPort, QWidget *parent)
 }
 
 void MainWindow::enviarMensaje() {
+    /**
+     * return El mensaje que se le envió al otro usuario
+     *
+     */
     //se obtiene el mensaje del cuadro de texto.
     QString mensaje = messageInput->text();
 
@@ -58,6 +67,10 @@ void MainWindow::enviarMensaje() {
 }
 
 void MainWindow::mostrarMensajeRecibido(const QString &mensaje) {
+    /**
+     * @args &mensaje
+     * @return el mensaje encriptado que recibió el usuario
+     */
     // Obtiene el mensaje recibido
     QByteArray mensajeEncriptado = mensaje.toUtf8();
 

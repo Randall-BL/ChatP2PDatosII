@@ -19,6 +19,10 @@ void Cliente::iniciarServidor(quint16 puerto) {
 }
 
 void Cliente::enviarMensaje(const QString &mensaje) {
+    /**
+     * @args &mensaje
+     * @return
+     */
     if (socket->state() == QTcpSocket::ConnectedState) {
         QDataStream socketStream(socket);
         socketStream << mensaje;
