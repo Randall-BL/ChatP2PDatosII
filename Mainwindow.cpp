@@ -1,7 +1,9 @@
-#include "MainWindow.h"
+#include "Mainwindow.h"
 #include <QVBoxLayout>
 #include <QHostAddress>
-
+#include <QtCore/QCryptographicHash>
+#include "encriptador.h"
+#include <string>
 MainWindow::MainWindow(quint16 serverPort, quint16 clientPort, QWidget *parent)
     : QMainWindow(parent) {
     // Configuración de la interfaz de usuario
@@ -30,12 +32,27 @@ MainWindow::MainWindow(quint16 serverPort, quint16 clientPort, QWidget *parent)
 }
 
 void MainWindow::enviarMensaje() {
+    //se obtiene el mensaje del cuadro de texto.
     QString mensaje = messageInput->text();
-    cliente.enviarMensaje(mensaje);
+    //Se utiliza una funcion de hash de Sha256 para encriptar el mensaje
+    QCryptographicHash hash(QCryptographicHash::Sha256);
+    hash.addData(mensaje.toUtf8());
+    //Se obtiene el resultado de la encriptacion
+    QByteArray mensajeEncriptado = hash.result();
+    //Se envía el mensaje encriptado
+    cliente.enviarMensaje(mensajeEncriptado);
+    std::cout<<mensajeEncriptado<<std::endl;
     messageDisplay->append("Yo: " + mensaje);
     messageInput->clear();
 }
 
 void MainWindow::mostrarMensajeRecibido(const QString &mensaje) {
+    //Obtener el mensaje recibido
+    QByteArray mensajeEncriptado = mensaje.toUtf8();
+
+    //Desencriptar el mensaje
+    QCryptographicHash hash(QCryptographicHash::Sha256);
+    hash.setKey("ElPatoEsLaClave");
+    QByteArray mensajeDesencriptado = hash.decrypt(mensajeEncriptado);
     messageDisplay->append("Otro: " + mensaje);
 }

@@ -6,6 +6,7 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include "Cliente.h"
+#include "encriptador.h"
 
 class MainWindow : public QMainWindow {
     Q_OBJECT

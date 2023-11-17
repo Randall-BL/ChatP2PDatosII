@@ -1,5 +1,8 @@
 QT       += core gui network
 
+
+LIBS += -lssl -lcrypto
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
@@ -10,17 +13,18 @@ CONFIG += c++17
 
 SOURCES += \
     Cliente.cpp \
+    Mainwindow.cpp \
     ServidorP2P.cpp \
-    main.cpp \
-    mainwindow.cpp
+    main.cpp
 
 HEADERS += \
     Cliente.h \
+    Mainwindow.h \
     ServidorP2P.h \
-    mainwindow.h
+    encriptador.h
 
 FORMS += \
-    mainwindow.ui
+    Mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
