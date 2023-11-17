@@ -4,6 +4,8 @@
 #include <QtCore/QCryptographicHash>
 #include "encriptador.h"
 #include <string>
+#include <iostream>
+#include <sstream>
 MainWindow::MainWindow(quint16 serverPort, quint16 clientPort, QWidget *parent)
     : QMainWindow(parent) {
     // Configuración de la interfaz de usuario
@@ -41,18 +43,34 @@ void MainWindow::enviarMensaje() {
     QByteArray mensajeEncriptado = hash.result();
     //Se envía el mensaje encriptado
     cliente.enviarMensaje(mensajeEncriptado);
-    std::cout<<mensajeEncriptado<<std::endl;
+
+    // Imprimir el mensaje encriptado en consola.
+    std::stringstream ss;
+    ss << mensajeEncriptado.toStdString().c_str();
+    std::cout << ss.str() << std::endl;
+
+
     messageDisplay->append("Yo: " + mensaje);
     messageInput->clear();
 }
 
 void MainWindow::mostrarMensajeRecibido(const QString &mensaje) {
-    //Obtener el mensaje recibido
+    // Obtener el mensaje recibido
     QByteArray mensajeEncriptado = mensaje.toUtf8();
 
-    //Desencriptar el mensaje
-    QCryptographicHash hash(QCryptographicHash::Sha256);
-    hash.setKey("ElPatoEsLaClave");
-    QByteArray mensajeDesencriptado = hash.decrypt(mensajeEncriptado);
-    messageDisplay->append("Otro: " + mensaje);
+    // Verificar la integridad del mensaje
+    QByteArray hashValue;
+
+    // Calcular el hash del mensaje
+    hashValue = QCryptographicHash::hash(mensajeEncriptado, QCryptographicHash::Sha256);
+
+    // Comparar el hash del mensaje con el hash que se envió con el mensaje
+    bool mensajeVerificado = mensajeEncriptado == hashValue;
+
+    // Si el mensaje es válido, agregarlo al cuadro de texto de mensajes
+    if (mensajeVerificado) {
+        messageDisplay->append("Otro: " + mensaje);
+    } else {
+        messageDisplay->append("El mensaje recibido es inválido");
+    }
 }
